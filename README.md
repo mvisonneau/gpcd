@@ -5,7 +5,6 @@
 [![test](https://github.com/mvisonneau/gpcd/actions/workflows/test.yml/badge.svg)](https://github.com/mvisonneau/gpcd/actions/workflows/test.yml)
 [![Coverage Status](https://coveralls.io/repos/github/mvisonneau/gpcd/badge.svg?branch=main)](https://coveralls.io/github/mvisonneau/gpcd?branch=main)
 [![release](https://github.com/mvisonneau/gpcd/actions/workflows/release.yml/badge.svg)](https://github.com/mvisonneau/gpcd/actions/workflows/release.yml)
-[![gpcd](https://snapcraft.io/mvisonneau-gpcd/badge.svg)](https://snapcraft.io/mvisonneau-gpcd)
 
 Hacky command-line tool to go beyond their current <= 25 media download limitation and to download files concurrently.
 
