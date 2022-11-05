@@ -1,0 +1,172 @@
+before:
+  hooks:
+    - go mod download
+
+builds:
+  - main: ./cmd/gpcd
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+      - linux
+      - windows
+    goarch:
+      - amd64
+      - arm
+      - arm64
+    goarm: [6, 7]
+    flags:
+      - -trimpath
+    ignore:
+      - { goos: darwin, goarch: arm }
+      - { goos: windows, goarch: arm }
+      - { goos: windows, goarch: arm64 }
+
+archives:
+  - name_template: '{{ .ProjectName }}_{{ .Tag }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+    format_overrides:
+      - goos: windows
+        format: zip
+
+nfpms:
+  - maintainer: &author Maxime VISONNEAU <maxime.visonneau@gmail.com>
+    description: &description GoPro Cloud Downloader
+    license: &license Apache-2.0
+    homepage: &homepage https://github.com/mvisonneau/gpcd
+    vendor: *author
+    file_name_template: '{{ .ProjectName }}_{{ .Tag }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}'
+    formats:
+      - deb
+      - rpm
+
+brews:
+  - description: *description
+    homepage: *homepage
+    folder: Formula
+    tap:
+      owner: mvisonneau
+      name: homebrew-tap
+
+scoop:
+  description: *description
+  homepage: *homepage
+  license: *license
+  bucket:
+    owner: mvisonneau
+    name: scoops
+
+dockers:
+  - image_templates:
+      - 'docker.io/mvisonneau/gpcd:{{ .Tag }}-amd64'
+      - 'ghcr.io/mvisonneau/gpcd:{{ .Tag }}-amd64'
+      - 'quay.io/mvisonneau/gpcd:{{ .Tag }}-amd64'
+    ids: [gpcd]
+    goarch: amd64
+    use: buildx
+    build_flag_templates:
+      - --platform=linux/amd64
+      - --label=org.opencontainers.image.title={{ .ProjectName }}
+      - --label=org.opencontainers.image.description={{ .ProjectName }}
+      - --label=org.opencontainers.image.url=https://github.com/mvisonneau/gpcd
+      - --label=org.opencontainers.image.source=https://github.com/mvisonneau/gpcd
+      - --label=org.opencontainers.image.version={{ .Version }}
+      - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
+      - --label=org.opencontainers.image.revision={{ .FullCommit }}
+      - --label=org.opencontainers.image.licenses=Apache-2.0
+
+  - image_templates:
+      - 'docker.io/mvisonneau/gpcd:{{ .Tag }}-arm64'
+      - 'ghcr.io/mvisonneau/gpcd:{{ .Tag }}-arm64'
+      - 'quay.io/mvisonneau/gpcd:{{ .Tag }}-arm64'
+    ids: [gpcd]
+    goarch: arm64
+    use: buildx
+    build_flag_templates:
+      - --platform=linux/arm64
+      - --label=org.opencontainers.image.title={{ .ProjectName }}
+      - --label=org.opencontainers.image.description={{ .ProjectName }}
+      - --label=org.opencontainers.image.url=https://github.com/mvisonneau/gpcd
+      - --label=org.opencontainers.image.source=https://github.com/mvisonneau/gpcd
+      - --label=org.opencontainers.image.version={{ .Version }}
+      - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
+      - --label=org.opencontainers.image.revision={{ .FullCommit }}
+      - --label=org.opencontainers.image.licenses=Apache-2.0
+
+  - image_templates:
+      - 'docker.io/mvisonneau/gpcd:{{ .Tag }}-armv6'
+      - 'ghcr.io/mvisonneau/gpcd:{{ .Tag }}-armv6'
+      - 'quay.io/mvisonneau/gpcd:{{ .Tag }}-armv6'
+    ids: [gpcd]
+    goarch: arm
+    goarm: 6
+    use: buildx
+    build_flag_templates:
+      - --platform=linux/arm/v6
+      - --label=org.opencontainers.image.title={{ .ProjectName }}
+      - --label=org.opencontainers.image.description={{ .ProjectName }}
+      - --label=org.opencontainers.image.url=https://github.com/mvisonneau/gpcd
+      - --label=org.opencontainers.image.source=https://github.com/mvisonneau/gpcd
+      - --label=org.opencontainers.image.version={{ .Version }}
+      - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
+      - --label=org.opencontainers.image.revision={{ .FullCommit }}
+      - --label=org.opencontainers.image.licenses=Apache-2.0
+
+  - image_templates:
+      - 'docker.io/mvisonneau/gpcd:{{ .Tag }}-armv7'
+      - 'ghcr.io/mvisonneau/gpcd:{{ .Tag }}-armv7'
+      - 'quay.io/mvisonneau/gpcd:{{ .Tag }}-armv7'
+    ids: [gpcd]
+    goarch: arm
+    goarm: 7
+    use: buildx
+    build_flag_templates:
+      - --platform=linux/arm/v7
+      - --label=org.opencontainers.image.title={{ .ProjectName }}
+      - --label=org.opencontainers.image.description={{ .ProjectName }}
+      - --label=org.opencontainers.image.url=https://github.com/mvisonneau/gpcd
+      - --label=org.opencontainers.image.source=https://github.com/mvisonneau/gpcd
+      - --label=org.opencontainers.image.version={{ .Version }}
+      - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
+      - --label=org.opencontainers.image.revision={{ .FullCommit }}
+      - --label=org.opencontainers.image.licenses=Apache-2.0
+
+docker_manifests:
+  - name_template: docker.io/mvisonneau/gpcd:{{ .Tag }}
+    image_templates:
+      - docker.io/mvisonneau/gpcd:{{ .Tag }}-amd64
+      - docker.io/mvisonneau/gpcd:{{ .Tag }}-arm64
+      - docker.io/mvisonneau/gpcd:{{ .Tag }}-armv6
+      - docker.io/mvisonneau/gpcd:{{ .Tag }}-armv7
+
+  - name_template: ghcr.io/mvisonneau/gpcd:{{ .Tag }}
+    image_templates:
+      - ghcr.io/mvisonneau/gpcd:{{ .Tag }}-amd64
+      - ghcr.io/mvisonneau/gpcd:{{ .Tag }}-arm64
+      - ghcr.io/mvisonneau/gpcd:{{ .Tag }}-armv6
+      - ghcr.io/mvisonneau/gpcd:{{ .Tag }}-armv7
+
+  - name_template: quay.io/mvisonneau/gpcd:{{ .Tag }}
+    image_templates:
+      - quay.io/mvisonneau/gpcd:{{ .Tag }}-amd64
+      - quay.io/mvisonneau/gpcd:{{ .Tag }}-arm64
+      - quay.io/mvisonneau/gpcd:{{ .Tag }}-armv6
+      - quay.io/mvisonneau/gpcd:{{ .Tag }}-armv7
+
+checksum:
+  name_template: '{{ .ProjectName }}_{{ .Tag }}_sha512sums.txt'
+  algorithm: sha512
+
+signs:
+  - artifacts: checksum
+    args:
+      [
+        '-u',
+        'C09CA9F71C5C988E65E3E5FCADEA38EDC46F25BE',
+        '--output',
+        '${signature}',
+        '--detach-sign',
+        '${artifact}',
+      ]
+
+changelog:
+  skip: true
