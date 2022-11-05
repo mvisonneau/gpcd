@@ -22,6 +22,12 @@ linters:
 
     # To assess later on
     - paralleltest
+    - gomoddirectives
+    - wsl
+    - gci
+    - gomnd
+    - nlreturn
+    - lll
 
 linters-settings:
   funlen:

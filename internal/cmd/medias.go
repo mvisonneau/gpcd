@@ -19,7 +19,7 @@ const (
 	MediaTypeVideo MediaType = "Video"
 	MediaTypePhoto MediaType = "Photo"
 
-	// TODO: Add missed ones
+	// TODO: Add missed ones.
 )
 
 func (m *Media) String() string {
