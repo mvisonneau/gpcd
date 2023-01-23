@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/mostafa-asg/go-dl v0.0.0-00010101000000-000000000000
 	github.com/pkg/errors v0.9.1
-	github.com/urfave/cli/v2 v2.23.2
+	github.com/urfave/cli/v2 v2.24.1
 )
 
 require (
